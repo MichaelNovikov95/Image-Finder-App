@@ -7,6 +7,7 @@ export default function App() {
   const [galleryCollection, setGalleryCollection] = useState(null);
   const [searchPhotoName, setSearchPhotoName] = useState('');
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
