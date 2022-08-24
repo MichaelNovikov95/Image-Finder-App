@@ -15,33 +15,33 @@ export default function App() {
   const [prevSearchedPhoto, setPrevSearchedPhoto] = useState('');
 
   useEffect(() => {
-    if (searchPhotoName !== prevSearchedPhoto && prevSearchedPhoto !== '') {
-      setPage(1);
-    }
-
-    const fetchGallery = async () => {
-      try {
-        setLoading(true);
-        const response = await Api.galleryFetch(searchPhotoName, page);
-        if (page !== 1) {
-          setGalleryCollection(prevState => [...prevState, ...response]);
-        } else {
-          setGalleryCollection(response);
+    setPrevSearchedPhoto(searchPhotoName);
+    if (searchPhotoName) {
+      const fetchGallery = async () => {
+        try {
+          setLoading(true);
+          const response = await Api.galleryFetch(searchPhotoName, page);
+          if (searchPhotoName !== prevSearchedPhoto && page !== 1) {
+            console.log('1 if');
+            setPage(1);
+          } else if (page !== 1) {
+            console.log('2 if');
+            setGalleryCollection(prevState => [...prevState, ...response]);
+          } else {
+            console.log('3 else');
+            setGalleryCollection(response);
+          }
+        } catch (error) {
+          setError(error.message);
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        setError(error.message);
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (searchPhotoName === '') {
-      return;
+      };
+      fetchGallery(searchPhotoName, page);
     }
-
-    fetchGallery();
-  }, [page, prevSearchedPhoto, searchPhotoName]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, searchPhotoName]);
 
   const submitHandler = inputPhotoName => {
     setPrevSearchedPhoto(searchPhotoName);
